@@ -137,7 +137,7 @@ def game_loop():
 
     grid_size = int(input(BOARD_SIZE_PROMPT))
 
-    solution = get_game_solution("words.txt", grid_size)
+    solution = get_game_solution(WORDS_FILE, grid_size)
     puzzle = shuffle_puzzle(solution)
     solved = check_win(puzzle, solution)
 
