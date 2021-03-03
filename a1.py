@@ -246,21 +246,29 @@ def print_solution_position(solution: str, puzzle: str) -> None:
 
 
 def game_loop():
+    """
+    The main game loop function that loops if the user wants to continue their
+    play
+    """
+
+    # Valid inputs that the user can use
     move_inputs = (UP, DOWN, LEFT, RIGHT)
     other_inputs = (GIVE_UP, HELP)
 
     grid_size = int(input(BOARD_SIZE_PROMPT))
 
+    # Get the puzzle and its solution
     solution = get_game_solution(WORDS_FILE, grid_size)
     puzzle = shuffle_puzzle(solution)
-    solved = check_win(puzzle, solution)
 
+    solved = check_win(puzzle, solution)
     print_solution_position(solution, puzzle)
 
+    # Continue to loop until the puzzle is solved or the user gives up
     while not solved:
-
         player_input = input(DIRECTION_PROMPT)
 
+        # Player move inputs handler
         if player_input in move_inputs:
             move_attempt = move(puzzle, player_input)
             if move_attempt:
@@ -269,6 +277,7 @@ def game_loop():
             else:
                 print(INVALID_MOVE_FORMAT.format(player_input))
 
+        # Other inputs handler
         elif player_input in other_inputs:
             if player_input == GIVE_UP:
                 break
@@ -280,11 +289,13 @@ def game_loop():
 
         solved = check_win(puzzle, solution)
 
+    # Show message depending if user won or not
     if solved:
         print(WIN_MESSAGE)
     else:
         print(GIVE_UP_MESSAGE)
 
+    # Check if the user wishes to play again
     play_again = input(PLAY_AGAIN_PROMPT)
     if play_again.lower() == "y" or play_again == "":
         game_loop()
