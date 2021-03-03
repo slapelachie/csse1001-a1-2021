@@ -46,12 +46,43 @@ def shuffle_puzzle(solution: str) -> str:
 
 
 def check_win(puzzle: str, solution: str) -> bool:
+    """
+    Check if the user has one based on if the puzzle and the solution are the same
+
+    Parameters:
+        puzzle (str): the puzzle to be checked
+        solution (str): the solved puzzle
+
+    Returns:
+        (str): Whether if the puzzle is solved or not
+
+    """
+
     # TODO: Make this human readable
-    return puzzle[: (len(solution) - 1)] == solution[: (len(solution) - 1)]
+    # Check if every character besides the last is the same
+    return puzzle[:-1] == solution[:-1]
 
 
 def swap_position(puzzle: str, from_index: int, to_index: int) -> str:
+    """
+    Swap the positions of two characters in a string
+
+    Parameters:
+        puzzle (str): the puzzle that has characters to be swapped
+        from_index (int): The first chracter to be swapped
+        to_index (int): The second character to be swapped
+
+    Returns:
+        (str): the puzzle with the characters swapped
+
+    Note:
+        An example of this function is given the puzzle as "abcd" and from_index
+        as 0 and to_index as 2 would be from "abcd" -> "cbad"
+    """
+
     puzzle_list = list(puzzle)
+
+    # Used to swap the positons of the chracters in the array
     puzzle_list[from_index], puzzle_list[to_index] = (
         puzzle_list[to_index],
         puzzle_list[from_index],
@@ -60,10 +91,26 @@ def swap_position(puzzle: str, from_index: int, to_index: int) -> str:
 
 
 def move(puzzle: str, direction: str):
+    """
+    Move the blank tile to a position in the grid through the options up, down,
+    left and right. Returns nothing if the tile cannot move to the specified
+    location
+
+    Parameters:
+        puzzle (str): the puzzle where the blank tile will move
+        direction (str): the direction for which the tile will move
+                         only accepts "UP", "DOWN", "LEFT" and "RIGHT"
+
+    Returns:
+        (str): if the move was valid, the puzzle with the tile moved
+        (None): if the move was not valid
+    """
+
     position_index = get_position(puzzle)
     position = position_index + 1
     grid_width = get_grid_width(puzzle)
 
+    # What direction to moved the tile if it's a valid move
     if direction == UP:
         if (position) > grid_width:
             return swap_position(puzzle, position_index, position_index - grid_width)
@@ -84,33 +131,86 @@ def move(puzzle: str, direction: str):
 
 
 def get_position(puzzle: str) -> int:
+    """
+    Get the current index/position of the blank tile in the puzzle string
+
+    Parameters:
+        puzzle (str): the puzzle that contains the empty tile
+
+    Returns:
+        (int): the index of the blank tile in the puzzle string
+
+    """
+
     return puzzle.index(EMPTY)
 
 
 def print_grid(puzzle: str) -> None:
+    """
+    Prints out the grid for the inputed puzzle string
+
+    Parameters:
+        puzzle (str): the puzzle string that is to be printed
+
+    Returns:
+        (None)
+    """
+
     grid = generate_grid(puzzle)
     print(grid)
     return None
 
 
 def generate_grid(contents: str) -> str:
+    """
+    Generate the grid for the contents of a puzzle string based on the design
+    +---+
+    | a |
+    +---+
+
+    Parameters:
+        contents (str): the contents of the puzzle to be generated in the grid
+
+    Returns:
+        (str): the grid the contains the characters within
+    """
+
     grid = ""
     grid_width = get_grid_width(contents)
 
+    # Generate each row of the grid
     for row in range(grid_width):
-        grid += generate_grid_row(grid_width) + "\n"
+        # Generate the seperator row
+        grid += generate_grid_separator_row(grid_width) + "\n"
+
+        # Generate the row with characters in it
         for column in range(grid_width):
             position = (row * grid_width) + column
             grid += VERTICAL_WALL + EMPTY + contents[position] + EMPTY
+
         grid += "{}\n".format(VERTICAL_WALL)
 
-    grid += generate_grid_row(grid_width)
+    grid += generate_grid_separator_row(grid_width)
 
     return grid
 
 
-def generate_grid_row(width: int) -> str:
+def generate_grid_separator_row(width: int) -> str:
+    """
+    Generate the seperator row for the grid based on the amount of characters
+    to appear in that row
+    Example: +---+---+---+
+
+    Parameters:
+        width (int): the amount of colums the row will have that contains
+                     characters
+
+    Returns:
+        (str): the seperator row of the grid
+    """
+
     row = ""
+
     for _ in range(width):
         row += CORNER + (3 * HORIZONTAL_WALL)
 
@@ -119,6 +219,20 @@ def generate_grid_row(width: int) -> str:
 
 
 def get_grid_width(puzzle: str) -> int:
+    """
+    Get the width of the grid based on the size of the puzzle
+
+    Parameters:
+        puzzle (str): the puzzle
+
+    Returns:
+        (int) the width of the grid
+
+    Note:
+        The size of the puzzle must be a square otherwise the width will not
+        reflect the proper size of the grid
+    """
+
     return int(math.sqrt(len(puzzle)))
 
 
