@@ -5,12 +5,10 @@ Semester 1, 2021
 CSSE1001/CSSE7030
 """
 
-import math
-
 from a1_support import *
 
 
-__author__ = "Lachlan Slape, 46385200"
+__author__ = "Lachlan Slape, s4638520"
 __email__ = "s4638520@student.uq.edu.au"
 
 
@@ -22,7 +20,7 @@ def shuffle_puzzle(solution: str) -> str:
         solution (str): a solution to be converted into a shuffled puzzle.
 
     Returns:
-        (str): a solvable shuffled game with an empty tile at the
+        (str): a solvable shuffled game with an blank tile at the
                bottom right corner.
 
     References:
@@ -57,7 +55,6 @@ def check_win(puzzle: str, solution: str) -> bool:
         (str): Whether if the puzzle is solved or not
 
     """
-
     # TODO: Make this human readable
     # Check if every character besides the last is the same
     return puzzle[:-1] == solution[:-1]
@@ -79,7 +76,6 @@ def swap_position(puzzle: str, from_index: int, to_index: int) -> str:
         An example of this function is given the puzzle as "abcd" and from_index
         as 0 and to_index as 2 would be from "abcd" -> "cbad"
     """
-
     puzzle_list = list(puzzle)
 
     # Used to swap the positons of the chracters in the array
@@ -105,8 +101,7 @@ def move(puzzle: str, direction: str):
         (str): if the move was valid, the puzzle with the tile moved
         (None): if the move was not valid
     """
-
-    position_index = get_position(puzzle)
+    position_index = puzzle.index(EMPTY)
     position = position_index + 1
     grid_width = get_grid_width(puzzle)
 
@@ -130,21 +125,6 @@ def move(puzzle: str, direction: str):
     return None
 
 
-def get_position(puzzle: str) -> int:
-    """
-    Get the current index/position of the blank tile in the puzzle string
-
-    Parameters:
-        puzzle (str): the puzzle that contains the empty tile
-
-    Returns:
-        (int): the index of the blank tile in the puzzle string
-
-    """
-
-    return puzzle.index(EMPTY)
-
-
 def print_grid(puzzle: str) -> None:
     """
     Prints out the grid for the inputed puzzle string
@@ -155,10 +135,8 @@ def print_grid(puzzle: str) -> None:
     Returns:
         (None)
     """
-
     grid = generate_grid(puzzle)
     print(grid)
-    return None
 
 
 def generate_grid(contents: str) -> str:
@@ -174,7 +152,6 @@ def generate_grid(contents: str) -> str:
     Returns:
         (str): the grid the contains the characters within
     """
-
     grid = ""
     grid_width = get_grid_width(contents)
 
@@ -208,7 +185,6 @@ def generate_grid_separator_row(width: int) -> str:
     Returns:
         (str): the seperator row of the grid
     """
-
     row = ""
 
     for _ in range(width):
@@ -232,11 +208,20 @@ def get_grid_width(puzzle: str) -> int:
         The size of the puzzle must be a square otherwise the width will not
         reflect the proper size of the grid
     """
-
-    return int(math.sqrt(len(puzzle)))
+    return int(len(puzzle) ** (1 / 2))
 
 
 def print_solution_position(solution: str, puzzle: str) -> None:
+    """
+    Print both the solution and the puzzle grid
+
+    Parameters:
+        solution (str): the solution of the puzzle string
+        puzzle (str): the puzzle string
+
+    Returns:
+        None
+    """
     print("Solution:")
     print(generate_grid(solution))
     print("")
@@ -245,67 +230,62 @@ def print_solution_position(solution: str, puzzle: str) -> None:
     print("")
 
 
-def game_loop():
-    """
-    The main game loop function that loops if the user wants to continue their
-    play
-    """
+def main():
+    """The main function that is executed when the file is run"""
+    print(WELCOME_MESSAGE)
 
-    # Valid inputs that the user can use
-    move_inputs = (UP, DOWN, LEFT, RIGHT)
-    other_inputs = (GIVE_UP, HELP)
+    playing = True
+    while playing:
 
-    grid_size = int(input(BOARD_SIZE_PROMPT))
+        # Valid inputs that the user can use
+        move_actions = (UP, DOWN, LEFT, RIGHT)
+        other_actions = (GIVE_UP, HELP)
 
-    # Get the puzzle and its solution
-    solution = get_game_solution(WORDS_FILE, grid_size)
-    puzzle = shuffle_puzzle(solution)
+        grid_size = int(input(BOARD_SIZE_PROMPT))
 
-    solved = check_win(puzzle, solution)
-    print_solution_position(solution, puzzle)
-
-    # Continue to loop until the puzzle is solved or the user gives up
-    while not solved:
-        player_input = input(DIRECTION_PROMPT)
-
-        # Player move inputs handler
-        if player_input in move_inputs:
-            move_attempt = move(puzzle, player_input)
-            if move_attempt:
-                puzzle = move_attempt
-                print_solution_position(solution, puzzle)
-            else:
-                print(INVALID_MOVE_FORMAT.format(player_input))
-
-        # Other inputs handler
-        elif player_input in other_inputs:
-            if player_input == GIVE_UP:
-                break
-            elif player_input == HELP:
-                print(HELP_MESSAGE)
-
-        else:
-            print(INVALID_MESSAGE)
+        # Get the puzzle and its solution
+        solution = get_game_solution(WORDS_FILE, grid_size)
+        puzzle = shuffle_puzzle(solution)
 
         solved = check_win(puzzle, solution)
+        print_solution_position(solution, puzzle)
 
-    # Show message depending if user won or not
-    if solved:
-        print(WIN_MESSAGE)
-    else:
-        print(GIVE_UP_MESSAGE)
+        # Continue to loop until the puzzle is solved or the user gives up
+        while not solved:
+            player_action = input(DIRECTION_PROMPT)
 
-    # Check if the user wishes to play again
-    play_again = input(PLAY_AGAIN_PROMPT)
-    if play_again.lower() == "y" or play_again == "":
-        game_loop()
-    else:
-        print(BYE)
+            # Player move inputs handler
+            if player_action in move_actions:
+                move_attempt = move(puzzle, player_action)
+                if move_attempt:
+                    puzzle = move_attempt
+                    print_solution_position(solution, puzzle)
+                else:
+                    print(INVALID_MOVE_FORMAT.format(player_action))
 
+            # Other inputs handler
+            elif player_action in other_actions:
+                if player_action == GIVE_UP:
+                    break
+                elif player_action == HELP:
+                    print(HELP_MESSAGE)
 
-def main():
-    print(WELCOME_MESSAGE)
-    game_loop()
+            else:
+                print(INVALID_MESSAGE)
+
+            solved = check_win(puzzle, solution)
+
+        # Show message depending if user won or not
+        if solved:
+            print(WIN_MESSAGE)
+        else:
+            print(GIVE_UP_MESSAGE)
+
+        # Check if the user wishes to play again
+        play_again = input(PLAY_AGAIN_PROMPT)
+        if not (play_again.lower() == "y" or play_again == ""):
+            playing = False
+            print(BYE)
 
 
 if __name__ == "__main__":

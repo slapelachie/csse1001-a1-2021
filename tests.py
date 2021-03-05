@@ -26,10 +26,10 @@ class AssignmentTest(unittest.TestCase):
         width = a1.get_grid_width("abcdefghi")
         self.assertEqual(width, 3)
 
-    def test_generate_grid_row(self):
+    def test_generate_grid_separator_row(self):
         row_length = random.randint(0, 9)
         row_len = (row_length * 4) + 1
-        row = a1.generate_grid_row(row_length)
+        row = a1.generate_grid_separator_row(row_length)
         self.assertEqual(row_len, len(row))
 
     def test_generate_grid(self):
