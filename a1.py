@@ -259,7 +259,6 @@ def main():
                 move_attempt = move(puzzle, player_action)
                 if move_attempt:
                     puzzle = move_attempt
-                    print_solution_position(solution, puzzle)
                 else:
                     print(INVALID_MOVE_FORMAT.format(player_action))
 
@@ -273,6 +272,7 @@ def main():
             else:
                 print(INVALID_MESSAGE)
 
+            print_solution_position(solution, puzzle)
             solved = check_win(puzzle, solution)
 
         # Show message depending if user won or not
