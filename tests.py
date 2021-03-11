@@ -58,20 +58,38 @@ class AssignmentTest(unittest.TestCase):
         puzzle_moved = a1.move(puzzle, "U")
         self.assertEqual(puzzle_moved, "a cdbefgh")
 
+        puzzle_moved = a1.move(puzzle_moved, "U")
+        self.assertEqual(puzzle_moved, None)
+
         puzzle_moved = a1.move(puzzle, "D")
         self.assertEqual(puzzle_moved, "abcdgef h")
+
+        puzzle_moved = a1.move(puzzle_moved, "D")
+        self.assertEqual(puzzle_moved, None)
 
         puzzle_moved = a1.move(puzzle, "L")
         self.assertEqual(puzzle_moved, "abc defgh")
 
+        puzzle_moved = a1.move(puzzle_moved, "L")
+        self.assertEqual(puzzle_moved, None)
+
         puzzle_moved = a1.move(puzzle, "R")
         self.assertEqual(puzzle_moved, "abcde fgh")
+
+        puzzle_moved = a1.move(puzzle_moved, "R")
+        self.assertEqual(puzzle_moved, None)
 
     def test_move_two(self):
         puzzle = "ab c"
 
         puzzle_moved = a1.move(puzzle, "U")
         self.assertEqual(puzzle_moved, " bac")
+
+        puzzle_moved = a1.move(puzzle, "D")
+        self.assertEqual(puzzle_moved, None)
+
+        puzzle_moved = a1.move(puzzle, "L")
+        self.assertEqual(puzzle_moved, None)
 
         puzzle_moved = a1.move(puzzle, "R")
         self.assertEqual(puzzle_moved, "abc ")
