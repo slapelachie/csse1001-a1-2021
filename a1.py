@@ -55,7 +55,6 @@ def check_win(puzzle: str, solution: str) -> bool:
         (str): Whether if the puzzle is solved or not
 
     """
-    # TODO: Make this human readable
     # Check if every character besides the last is the same
     return puzzle[:-1] == solution[:-1]
 
@@ -125,20 +124,6 @@ def move(puzzle: str, direction: str):
     return None
 
 
-def print_grid(puzzle: str) -> None:
-    """
-    Prints out the grid for the inputed puzzle string
-
-    Parameters:
-        puzzle (str): the puzzle string that is to be printed
-
-    Returns:
-        (None)
-    """
-    grid = generate_grid(puzzle)
-    print(grid)
-
-
 def generate_grid(contents: str) -> str:
     """
     Generate the grid for the contents of a puzzle string based on the design
@@ -170,6 +155,20 @@ def generate_grid(contents: str) -> str:
     grid += generate_grid_separator_row(grid_width)
 
     return grid
+
+
+def print_grid(puzzle: str) -> None:
+    """
+    Prints out the grid for the inputed puzzle string
+
+    Parameters:
+        puzzle (str): the puzzle string that is to be printed
+
+    Returns:
+        (None)
+    """
+    grid = generate_grid(puzzle)
+    print(grid)
 
 
 def generate_grid_separator_row(width: int) -> str:
@@ -222,12 +221,11 @@ def print_solution_position(solution: str, puzzle: str) -> None:
     Returns:
         None
     """
-    print("Solution:")
-    print(generate_grid(solution))
-    print("")
-    print("Current position:")
-    print(generate_grid(puzzle))
-    print("")
+    print(
+        "Solution:\n{}\n\nCurrent position:\n{}\n".format(
+            generate_grid(solution), generate_grid(puzzle)
+        )
+    )
 
 
 def main():
@@ -254,7 +252,8 @@ def main():
         while not solved:
             player_action = input(DIRECTION_PROMPT)
 
-            # Player move inputs handler
+            # Player move input handler
+            # Updates the puzzle with the new board layout, if fail alert user
             if player_action in move_actions:
                 move_attempt = move(puzzle, player_action)
                 if move_attempt:
@@ -269,6 +268,7 @@ def main():
                 elif player_action == HELP:
                     print(HELP_MESSAGE)
 
+            # If there is no match for input, alert the user
             else:
                 print(INVALID_MESSAGE)
 

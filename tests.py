@@ -19,10 +19,19 @@ class AssignmentTest(unittest.TestCase):
         win = a1.check_win("abcd ", "abcde")
         self.assertTrue(win)
 
+        win = a1.check_win("abcde ", "abcdef")
+        self.assertTrue(win)
+
+        win = a1.check_win("abcdef ", "abcdefg")
+        self.assertTrue(win)
+
         win = a1.check_win("bd ac", "abcde")
         self.assertFalse(win)
 
     def test_get_grid_width(self):
+        width = a1.get_grid_width("abcd")
+        self.assertEqual(width, 2)
+
         width = a1.get_grid_width("abcdefghi")
         self.assertEqual(width, 3)
 
