@@ -143,7 +143,7 @@ def generate_grid(contents: str) -> str:
     # Generate each row of the grid
     for row in range(grid_width):
         # Generate the seperator row
-        grid += generate_grid_separator_row(grid_width) + "\n"
+        grid += "{}\n".format(generate_grid_separator_row(grid_width))
 
         # Generate the row with characters in it
         for column in range(grid_width):
@@ -219,7 +219,7 @@ def print_solution_position(solution: str, puzzle: str) -> None:
         puzzle (str): the puzzle string
 
     Returns:
-        None
+        (None)
     """
     print(
         "Solution:\n{}\n\nCurrent position:\n{}\n".format(
