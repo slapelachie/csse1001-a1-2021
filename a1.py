@@ -142,7 +142,7 @@ def generate_grid(contents: str) -> str:
 
     # Generate each row of the grid
     for row in range(grid_width):
-        # Generate the seperator row
+        # Add the seperator row
         grid += "{}\n".format(generate_grid_separator_row(grid_width))
 
         # Generate the row with characters in it
